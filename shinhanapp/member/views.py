@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.hashers import check_password
+from django.contrib.auth.hashers import check_password, make_password
 from .models import Member
 
 # # Create your views here.
@@ -35,3 +35,16 @@ def logout(request):
 
     return redirect('/')
     
+
+def register(request):
+    if request.method == 'POST':
+        member = Member(
+            user_id = request.POST.get('user_id'),
+            password = make_password(request.POST.get('password')), # 비밀번호를 암호화하여 db에 저장
+            name = request.POST.get('name'),
+            age = request.POST.get('age'),
+        )
+        member.save()
+        return redirect('/')
+
+    return render(request, 'register.html')
