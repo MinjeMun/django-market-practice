@@ -81,8 +81,5 @@ class CommentCreateView(
 ):
     serializer_class = CommentCreateSerializer
 
-    def get_queryset(self):
-        return Comment.objects.all()
-
     def post(self, request, *args, **kwargs):
         return self.create(request, args, kwargs)
