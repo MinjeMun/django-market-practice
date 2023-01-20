@@ -35,3 +35,14 @@ class Comment(models.Model):
         db_table = 'shinhan_comment'
         verbose_name = '댓글'
         verbose_name_plural = '댓글'
+
+
+class Like(models.Model):
+    # 데이터가 있으면 좋아요 데이터가 없으면 좋아요x - 데이터의 유무로 판단
+    user = models.ForeignKey('member.Member', on_delete=models.CASCADE, verbose_name='사용자') 
+    product = models.ForeignKey('product.Product', on_delete=models.CASCADE, verbose_name='상품')
+
+    class Meta:
+        db_table = 'shinhan_product_like'
+        verbose_name = '상품 좋아요'
+        verbose_name_plural = '상품 좋아요'
