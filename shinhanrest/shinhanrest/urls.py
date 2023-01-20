@@ -1,4 +1,4 @@
-"""shinhanapp URL Configuration
+"""shinhanrest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -14,23 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-from product.views import main, detail, write
-from member.views import signin, signout, register
-from django.conf import settings
-from django.conf.urls.static import static
-
-
+from django.urls import path, include
+from rest_framework_simplejwt.views import (
+    TokenVerifyView,
+    TokenRefreshView,
+    TokenObtainPairView
+)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('product/<int:pk>/', detail),
-    path('product/write/', write),
-    path('member/login/', signin),
-    path('member/logout/', signout),
-    path('member/register/', register),
-    path('', main),
+    path('admin/', admin.site.urls), 
+    path('api/product', include('product.urls')),
+    path('api/token', TokenObtainPairView.as_view()),
 ]
 
-urlpatterns += static("/media/", document_root=settings.MEDIA_ROOT) # settings에 MEDIA_ROOT를 root directory로 설정

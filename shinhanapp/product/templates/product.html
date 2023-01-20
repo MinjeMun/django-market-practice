@@ -13,14 +13,14 @@
                 <div>
                     <h1 style="color: orange;">당당마켓</h1>
                     <span>가장 가까운 중고거래 플랫폼</span>
-                    <span style="color: aqua;"> {{ request.session.user_id }}</span>
+                    <span style="color: aqua;"> {{ request.user.username }}</span>
                 </div>
             </div>
         </div>
         <div class="product-content">
             <div>
                 <!-- 로그인 된 경우(request.session.user_id 있음) -->
-                {% if request.session.user_id %}
+                {% if request.user.is_authenticated %}
                 <a href="/member/logout/">로그아웃</a>
                 <!-- 로그인 안된 경우(request.session.user_id 없음) -->
                 {% else %}
@@ -45,13 +45,14 @@
                         <div class="flex-grow-1 ms-3 text-end" >
                             {{product.title}}<br/>
                             {{product.price}}<br/>
-                            {{product.location}}
+                            {{product.location}}<br/>
+                            {{product.user.username}}
                         </div>
-                    </div>
+                    </div>  
                 </button>
                 {% endfor %}
             </div>
-            {% if request.session.user_id %}
+            {% if request.user.is_authenticated %}
             <div class="text-end mt-3">
                 <a role="button" href="/product/write/" class="btn btn-primary">상품 등록</a>
             </div>
@@ -65,6 +66,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <div id="detailModalUsername"></div>
                         <img src="/static/bg.jpg" id="detailModalImage"/>
                         <div id="detailModalLocation"></div>
                         <div id="detailModalPrice"></div>

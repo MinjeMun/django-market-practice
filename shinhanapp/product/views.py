@@ -9,11 +9,12 @@ def main(request):
     return render(request, 'product.html', {'products':products})
 
 def write(request): # 상품 등록하는 페이지
-    if not request.session.get('user_id'):
+    if not request.user.is_authenticated:
         return redirect('/member/login/')
 
     if request.method == 'POST':
         product = Product(
+            user=request.user, # 실시간 변경 데이터 반영
             title=request.POST.get("title"),
             content=request.POST.get("content"),
             price=request.POST.get("price"),
@@ -30,6 +31,7 @@ def detail(request, pk):
 
     ret = {
         'title': product.title,
+        'username' : product.user.username, # 로그인 된 사용자 자동 로그인
         'content': product.content,
         'price': product.price,
         'location': product.location,
@@ -37,7 +39,8 @@ def detail(request, pk):
     }
 
     if product.image:
-        ret['image'] = product.image.url        
+        ret['image'] = product.image.url  
+
 
     return JsonResponse(ret)
 
