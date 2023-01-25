@@ -38,11 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'debug_toolbar',
     'product.apps.ProductConfig',
     'member.apps.MemberConfig',
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -143,6 +145,11 @@ SIMPLE_JWT = {
 }
 
 AUTH_USER_MODEL = "member.Member" # 모델 지정
-AUTHENTICATION_BACKENDS = { # 인증 시도할 때 권한 확인
-    "member.auth.MemberAuth" 
-}
+AUTHENTICATION_BACKENDS = [
+    # 인증 시도할 때 권한 확인
+    "member.auth.MemberAuth"  
+] 
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

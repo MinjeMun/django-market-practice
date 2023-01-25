@@ -20,15 +20,16 @@ class ProductListView(
 ): 
     serializer_class = ProductSerializer
     pagination_class = ProductLargePagination
-    permission_classes = [IsAuthenticated]
-
-
+    # permission_classes = [IsAuthenticated,]
 
     def get_queryset(self):
-        if self.request.user.is_authenticated: # 로그인 검사
-            products = Product.objects.all()
-        else:
-            products = Product.objects.none()
+        # prefetch_related로 필요한 값을 미리 불러옴 (시간 단축 -. 성능 개선)
+        products = Product.objects.all().prefetch_related('comment_set') 
+
+        # if self.request.user.is_authenticated: # 로그인 검사
+        #     products = Product.objects.all()
+        # else:
+        #     products = Product.objects.none()
         
         name = self.request.query_params.get('name')
 
@@ -85,6 +86,9 @@ class CommentCreateView(
     generics.GenericAPIView
 ):
     serializer_class = CommentCreateSerializer
+
+    def get_queryset(self):
+        return Comment.objects.all()
 
     def post(self, request, *args, **kwargs):
         return self.create(request, args, kwargs)

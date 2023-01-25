@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product,Comment,Like
+from .models import Product, Comment, Like
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -14,6 +14,15 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = '__all__' # 리스트로 원하는 field만 작성도 가능
 
 class CommentSerializer(serializers.ModelSerializer):
+    product_name = serializers.SerializerMethodField()
+    member_username = serializers.SerializerMethodField()
+
+    def get_product_name(self, obj):
+        return obj.product.name
+
+    def get_member_username(self, obj):
+        return obj.member.username
+
     class Meta:
         model  = Comment
         fields = '__all__' # 리스트로 원하는 field만 작성도 가능
