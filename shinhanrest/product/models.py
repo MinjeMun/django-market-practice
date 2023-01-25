@@ -28,7 +28,7 @@ class Comment(models.Model):
     # Member를 사용하기 위해 member.Member로 참조함 - 양 쪽 models에 import를 하게 되면 순환참조로 인해 오류 발생할 수 있음
     member = models.ForeignKey('member.Member', on_delete=models.CASCADE, verbose_name='사용자') 
     product = models.ForeignKey('product.Product', on_delete=models.CASCADE, verbose_name='상품')
-    reply = models.TextField(verbose_name='댓글')
+    content = models.TextField(verbose_name='댓글')
     tstamp = models.DateTimeField(auto_now_add=True, verbose_name='등록일시')
 
     class Meta:
